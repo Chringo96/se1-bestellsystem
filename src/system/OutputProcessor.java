@@ -25,7 +25,8 @@ final class OutputProcessor implements system.Components.OutputProcessor{
 		long price = 0;
 		long totalPrice = 0;
 		String fmtPriceTotal = "";
-
+		long fullMwst = 0;
+		String mwstPrint = "";
 
 		for (Order order : orders) {
 			Customer customer = order.getCustomer();
@@ -34,8 +35,8 @@ final class OutputProcessor implements system.Components.OutputProcessor{
 			for (OrderItem item : order.getItems()) {
 				s += ", " + item.getUnitsOrdered() + "x " + item.getDescription();
 				price += item.getArticle().getUnitPrice() * item.getUnitsOrdered();
-			}
-			
+				}
+
 			sbLineItem = fmtLine("#" + order.getId() + ", " + customerName + "'s Bestellung: "
 					+ s.replaceFirst(", ", ""), fmtPrice(price, "EUR", 14), printLineWidth);
 
@@ -43,12 +44,18 @@ final class OutputProcessor implements system.Components.OutputProcessor{
 			sbAllOrders.append(sbLineItem);
 			s = "";
 			fmtPriceTotal = pad(fmtPrice(totalPrice += price, "", " EUR"), 14, true);
+			
+			if(printVAT==true)
+				mwstPrint = pad(fmtPrice(fullMwst += orderProcessor.vat(price), "", " EUR"), 14, true);
+			
 			price = 0;
 		}
-
+		
+		
 		sbAllOrders.append("\n").append(fmtLine("-------------", " -------------", printLineWidth)).append("\n")
 				.append(fmtLine("Gesamtwert aller Bestellungen:", fmtPriceTotal, printLineWidth));
-
+		if(printVAT==true)
+			sbAllOrders.append("\n").append(fmtLine("Im Gesamtbetrag enthaltene Mehrwertsteuer (19%):", mwstPrint, printLineWidth));
 		System.out.println(sbAllOrders.toString());
 
 	}

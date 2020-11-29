@@ -33,14 +33,18 @@ final class OrderProcessor implements system.Components.OrderProcessor {
 
 	@Override
 	public long vat(long grossValue) {
-		// TODO Auto-generated method stub
-		return 0;
+		return (long)(grossValue - (grossValue/1.19));
 	}
 
 	@Override
 	public long vat(long grossValue, int rateIndex) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(rateIndex==1) {
+			return vat(grossValue);
+		}
+		if (rateIndex==2)
+		return (long)(grossValue - (grossValue/1.07));
+		System.out.println("rateIndex hat keinen gültigen Wert. Bitte '1' oder '2' eingeben.");
+		return Long.MAX_VALUE;
 	}
 
 }
