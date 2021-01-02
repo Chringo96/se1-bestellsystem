@@ -23,6 +23,8 @@ public class Order {
 	}
 
 	public Date getDate() {
+		if(date==null)
+			return new Date();
 		return date;
 	}
 
@@ -39,6 +41,8 @@ public class Order {
 	}
 	
 	public Order addItem(OrderItem item) {
+		if (items.contains(item) || item == null)
+			return this;
 		items.add(item);
 		return this;
 	}

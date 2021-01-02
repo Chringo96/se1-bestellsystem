@@ -15,27 +15,39 @@ public class Article {
 	}
 
 	public String getDescription() {
+	if(description == null || description == "")
+		return "";
 		return description;
 	}
 
 	public void setDescription(String descr) {
-		description = descr;
+		if (descr == "" || descr == null)
+			description = "";
+		else description = descr;
 	}
 
 	public long getUnitPrice() {
+		if(unitPrice<0)
+			return 0;
 		return unitPrice;
 	}
 
 	public void setUnitPrice(long price) {
-		unitPrice = price;
+		if(price<0 || price == Long.MAX_VALUE)
+			unitPrice = 0;
+			else unitPrice = price;
 	}
 
 	public int getUnitsInStore() {
+		if(unitsInStore<0)
+			return 0;
 		return unitsInStore;
 	}
 
 	public void setUnitsInStore(int number) {
-		unitsInStore = number;
+		if(number<0 || number == Integer.MAX_VALUE)
+			unitsInStore = 0;
+		else unitsInStore = number;
 	}
 
 	public String getId() {
